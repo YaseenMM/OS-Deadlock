@@ -17,7 +17,6 @@ public class Main {
 
 
 
-
     ///// MAIN /////
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -31,9 +30,9 @@ public class Main {
             throw new IllegalArgumentException("Incorrect number of arguments; must provide filename of input");
         }
 
-        printDebuggingInfo();
+//        printDebuggingInfo();
 
-
+        Optimistic.runFifo(tasks, resource_amounts);
 
 
 
@@ -64,7 +63,7 @@ public class Main {
             Activity a = new Activity(input.next(), input.nextInt(), input.nextInt(), input.nextInt(), input.nextInt());
             activities.add(a);
         }
-        activities = Util.sortByTaskID(activities);
+        activities = Util.sortActivitiesByID(activities);
 
         // add activities to tasks //
 
