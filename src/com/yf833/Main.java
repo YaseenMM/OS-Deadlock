@@ -1,10 +1,10 @@
 package com.yf833;
 
-import javax.activity.ActivityCompletedException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
     private static int num_resource_types;
     private static ArrayList<Integer> resource_amounts = new ArrayList<>();
 
-    private static ArrayList<Activity> activities = new ArrayList<Activity>();
+    private static LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
 
 
 
@@ -35,14 +35,16 @@ public class Main {
 
 
 
+
+
     }
 
 
     private static void printDebuggingInfo(){
-        System.out.println("num_tasks: " + num_tasks);
-        System.out.println("num_resource_types: " + num_resource_types);
-        System.out.println("resource_amounts: " + resource_amounts.toString());
-        System.out.println("activities: " + activities.toString());
+        System.out.println("\nnum_tasks: " + num_tasks);
+        System.out.println("\nnum_resource_types: " + num_resource_types);
+        System.out.println("\nresource_amounts: " + resource_amounts.toString());
+        System.out.println("\ntasks: " + tasks.toString());
     }
 
 
@@ -56,11 +58,40 @@ public class Main {
             resource_amounts.add(input.nextInt());
         }
 
-        // add activities //
+        // store activities into an arraylist and sort //
+        ArrayList<Activity> activities = new ArrayList<>();
         while(input.hasNext()){
             Activity a = new Activity(input.next(), input.nextInt(), input.nextInt(), input.nextInt(), input.nextInt());
-            activities.add(new Activity(input.next(), input.nextInt(), input.nextInt(), input.nextInt(), input.nextInt()));
+            activities.add(a);
         }
+        activities = Util.sortByTaskID(activities);
+
+        // add activities to tasks //
+
+        Task t = new Task(activities.get(0).taskID);
+        int current = t.taskID;
+        int i=0;
+        for(Activity a : activities){
+
+            if(a.taskID != current){
+                tasks.add(t);               // add previous task
+                current = a.taskID;         // increment current task
+                t = new Task(a.taskID);     // create a new task
+                t.activities.add(a);
+            }else{
+                t.activities.add(a);
+            }
+
+            //add the last task in the list
+            if(current == num_tasks && i==activities.size()-1){
+                tasks.add(t);
+            }
+
+            i++;
+        }
+
+
+
     }
 
 

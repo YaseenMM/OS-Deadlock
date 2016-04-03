@@ -1,21 +1,17 @@
 
-(1) get input from the user (name of input file) 
+(1) get input from the user (name of input file) ***
+(2) Create an Activity class ***
+(3) Create a Task class ***
+
+
+(4) write pseudocode for FIFO 
+
+(5) If deadlock is detected, print a message and abort the lowest numbered deadlocked task after releasing all its resources. If
+    deadlock remains, print another message and abort the next lowest numbered deadlocked task, etc. (for FIFO)
 
 
 
 
-
-
-(*) Create an Activity class 
-
-(?) Create a Task class 
-
-
-
-
-
-(*) If deadlock is detected, print a message and abort the lowest numbered deadlocked task after releasing all its resources. If
-    deadlock remains, print another message and abort the next lowest numbered deadlocked task, etc.
 
 (*) account for case where inputs for two tasks are interleaved (input 8)
 
