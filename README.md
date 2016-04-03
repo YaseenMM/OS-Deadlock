@@ -5,6 +5,9 @@
 
 
 (4) write pseudocode for FIFO 
+        > add waiting/blocked states (tasks can't get resources in the same cycle) 
+        > must take care of blocked tasks before doing anything else 
+
 
 (5) If deadlock is detected, print a message and abort the lowest numbered deadlocked task after releasing all its resources. If
     deadlock remains, print another message and abort the next lowest numbered deadlocked task, etc. (for FIFO)

@@ -41,13 +41,15 @@ public class Optimistic {
                 }
                 else if(current.type.equals("request")){
                     // try to claim the resource amount
-                    if(current.amount <= available.get(current.resourceID-1)){
+                    if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked){
                         resource_claims[t.taskID-1][current.resourceID-1] += current.amount;
                         available.set(current.resourceID-1, available.get(current.resourceID-1) - current.amount);
                         t.activities.poll();
                     }else{
                         t.waiting_time++;
+                        t.isBlocked = true;
                     }
+
                 }
                 else if(current.type.equals("release")){
                     resource_claims[t.taskID-1][current.resourceID-1] -= current.amount;
