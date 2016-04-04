@@ -4,13 +4,25 @@
 (3) Create a Task class ***
 
 
-(4) write pseudocode for FIFO 
-        > add waiting/blocked states (tasks can't get resources in the same cycle) 
-        > must take care of blocked tasks before doing anything else 
+(4) implement FIFO FIFO ***
+        
+(5) handle deadlocks for FIFO 
+        
+(6) handle delays for FIFO         
+                
+(*) fix FIFO for:
+        > input-02 (deadlock)
+        > input-03 (deadlock)
+        > input-04 (deadlock)
+        > input-05 
+        > input-06 (deadlock)
+        > input-07 (deadlock)
+        > input-10 (deadlock)
+        > input-12 
+        > input-13 
+        
+        
 
-
-(5) If deadlock is detected, print a message and abort the lowest numbered deadlocked task after releasing all its resources. If
-    deadlock remains, print another message and abort the next lowest numbered deadlocked task, etc. (for FIFO)
 
 
 

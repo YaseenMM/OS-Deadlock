@@ -16,6 +16,8 @@ public class Main {
     private static LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
 
 
+    private static final String FILE_NAME = "./input/input-13.txt";
+
 
     ///// MAIN /////
     public static void main(String[] args) throws FileNotFoundException {
@@ -24,7 +26,8 @@ public class Main {
         // (1) get input from file; initialize variables  //
 
         if(args.length == 1){
-            File inputfile = new File(args[0]);
+//            File inputfile = new File(args[0]);
+            File inputfile = new File(FILE_NAME);
             getInputFromFile(inputfile);
         }else{
             throw new IllegalArgumentException("Incorrect number of arguments; must provide filename of input");
