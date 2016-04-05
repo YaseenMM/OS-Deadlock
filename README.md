@@ -1,16 +1,5 @@
-
-(1) get input from the user (name of input file) ***
-(2) Create an Activity class ***
-(3) Create a Task class ***
-
-
-(4) implement initial FIFO code ***
-        
-(5) handle deadlocks for FIFO ***
-        
-(6) handle delays for FIFO         
                 
-(*) fix FIFO for:
+Implement FIFO for:
         > input-01 ***
         > input-02 ***
         > input-03 ***
@@ -24,13 +13,39 @@
         > input-11 ***
         > input-12 ***
         > input-13 *** 
+        
+---------------------------------------------------------
+
+(1) if a task's initial claim > resources present then abort ***
+
+(*) if a task's requests > its claims then abort 
+
+(*) implement a safe state check 
+
+(*) call safe state check function before running any activities 
+
+Implement Banker's for:
+        > input-01 
+        > input-02 
+        > input-03 
+        > input-04 
+        > input-05 
+        > input-06 
+        > input-07 
+        > input-08 
+        > input-09 
+        > input-10 
+        > input-11 
+        > input-12 
+        > input-13 
 
 
 
 
 
 
-(*) account for case where inputs for two tasks are interleaved (input 8)
+
+
 
 (*) account for malformed input (multiple activities on one line; ignore whitespace) 
 

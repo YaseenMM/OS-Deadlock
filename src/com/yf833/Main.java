@@ -35,8 +35,9 @@ public class Main {
 
 //        printDebuggingInfo();
 
-        Optimistic.runFifo(tasks, resource_amounts);
+//        Optimistic.runFifo(tasks, resource_amounts);
 
+        Banker.runBanker(tasks, resource_amounts);
 
 
     }
