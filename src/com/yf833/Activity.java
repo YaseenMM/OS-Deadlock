@@ -31,7 +31,7 @@ public class Activity {
 
 
     public String toString(){
-        return String.format("\n%-12s", this.type) + this.taskID + " " + this.delay + " " + this.resourceID + " " + this.amount;
+        return String.format("%-12s", this.type) + this.taskID + " " + this.delay + " " + this.resourceID + " " + this.amount;
     }
 
 }

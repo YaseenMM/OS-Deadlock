@@ -34,7 +34,9 @@ public class Optimistic {
 
 
         ///// Main Loop /////
-        while(!tasks.isEmpty()){
+        while(!tasks.isEmpty() || !blocked.isEmpty()){
+            System.out.println("=============== CYCLE " + (cycle) + " - " + (cycle+1) + " ===============");
+
 
             //check if blocked tasks can be serviced
             for(Task t : blocked){
@@ -81,6 +83,7 @@ public class Optimistic {
                     resource_claims[t.taskID-1][current.resourceID-1] -= current.amount;
                     available.set(current.resourceID-1, available.get(current.resourceID-1) + current.amount);
                     t.activities.poll();
+
                 }
 
                 else if (current.type.equals("terminate")){
@@ -104,21 +107,23 @@ public class Optimistic {
 
 
 
+
             ///// detect deadlock /////
             if(tasks.size() == 0 && blocked.size() != 0 && isDeadlocked == false){
                 System.out.println("DEADLOCK DETECTED !!!!!");
                 isDeadlocked = true;
             }
-
             ///// break deadlock if already deadlocked /////
+            System.out.println("IS DEADLOCKED: " + isDeadlocked);
             if(isDeadlocked){
+
+                System.out.println("IS DEADLOCKED");
 
                 // while the next blocked task's activity can't be run; keep aborting tasks
                 while(isAvailable() == false){
 
                     //abort the lowest numbered task
                     abortLowestTask();
-
                 }
 
                 //move next task to ready
@@ -145,7 +150,7 @@ public class Optimistic {
             cycle++;
 
             ///// DEBUGGING INFO /////
-            System.out.println("=============== CYCLE " + (cycle-1) + " - " + cycle + " ===============");
+
 
             System.out.println("\nready:");
             System.out.println(tasks.toString());
@@ -160,6 +165,10 @@ public class Optimistic {
             System.out.println(available.toString() + "\n");
 
         }
+
+
+
+
 
 
         // print output //
@@ -217,6 +226,7 @@ public class Optimistic {
                     available.set(j, available.get(j) + claim);
                 }
 
+                System.out.println("Task " + t.taskID + " aborted");
             }
         }
 
