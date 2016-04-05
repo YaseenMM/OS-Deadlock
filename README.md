@@ -16,8 +16,8 @@
         > input-03 ***
         > input-04 ***
         > input-05 
-        > input-06 (deadlock - off by 1)
-        > input-07 (deadlock - off by 1)
+        > input-06 ***
+        > input-07 ***
         > input-08 ***
         > input-09 ***
         > input-10 ***

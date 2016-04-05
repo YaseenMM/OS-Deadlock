@@ -3,6 +3,8 @@ package com.yf833;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Optimistic {
@@ -14,6 +16,7 @@ public class Optimistic {
     public static ArrayList<Task> finished_tasks = new ArrayList<>();
 
     public static ArrayList<Integer> available;
+    public static ArrayList<Integer> freed;
     public static LinkedBlockingQueue<Task> blocked = new LinkedBlockingQueue<>();
 
 
@@ -21,6 +24,7 @@ public class Optimistic {
     public static void runFifo(LinkedBlockingQueue<Task> tasks, ArrayList<Integer> resource_amounts){
 
         available = resource_amounts;
+        freed = new ArrayList<>(Collections.nCopies(available.size(), 0));
 
         //initialize resource_claims[][]
         resource_claims = new int[tasks.size()][resource_amounts.size()];
@@ -81,7 +85,7 @@ public class Optimistic {
                 }
                 else if(current.type.equals("release")){
                     resource_claims[t.taskID-1][current.resourceID-1] -= current.amount;
-                    available.set(current.resourceID-1, available.get(current.resourceID-1) + current.amount);
+                    freed.set(current.resourceID-1, freed.get(current.resourceID-1) + current.amount);
                     t.activities.poll();
 
                 }
@@ -137,14 +141,11 @@ public class Optimistic {
             }
 
 
-            /*
-            - If deadlock is detected, print a message and abort the lowest numbered deadlocked task after releasing all its resources.
-            - If deadlock remains, print another message and abort the next lowest numbered deadlocked task, etc.
-
-
-            - If you detect the deadlock at cycle k, you abort the task(s) at cycle k and hence its/their resources
-            become available at cycle k+1. This simple deadlock detection algorithm is not used in practice.
-            */
+            ///// move freed resources to available /////
+            for(int i=0; i<available.size(); i++){
+                available.set(i, available.get(i) + freed.get(i));
+                freed.set(i, 0);
+            }
 
 
             cycle++;
