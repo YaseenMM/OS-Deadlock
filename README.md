@@ -4,20 +4,24 @@
 (3) Create a Task class ***
 
 
-(4) implement FIFO FIFO ***
+(4) implement initial FIFO code ***
         
-(5) handle deadlocks for FIFO 
+(5) handle deadlocks for FIFO ***
         
 (6) handle delays for FIFO         
                 
 (*) fix FIFO for:
-        > input-02 (deadlock)
-        > input-03 (deadlock)
-        > input-04 (deadlock)
+        > input-01 ***
+        > input-02 ***
+        > input-03 ***
+        > input-04 ***
         > input-05 
-        > input-06 (deadlock)
-        > input-07 (deadlock)
-        > input-10 (deadlock)
+        > input-06 (deadlock - off by 1)
+        > input-07 (deadlock - off by 1)
+        > input-08 ***
+        > input-09 ***
+        > input-10 ***
+        > input-11 ***
         > input-12 
         > input-13 
         

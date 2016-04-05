@@ -10,6 +10,8 @@ public class Task {
     public int total_time;
     public int waiting_time;
     public boolean isBlocked = false;
+    public boolean isAborted = false;
+
 
     public LinkedBlockingQueue<Activity> activities;
 

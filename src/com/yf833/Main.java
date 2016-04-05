@@ -16,7 +16,7 @@ public class Main {
     private static LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
 
 
-    private static final String FILE_NAME = "./input/input-13.txt";
+    private static final String FILE_NAME = "./input/input-10.txt";
 
 
     ///// MAIN /////
