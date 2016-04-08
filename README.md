@@ -17,12 +17,15 @@ Implement FIFO for:
 ---------------------------------------------------------
 
 (1) if a task's initial claim > resources present then abort ***
-
 (*) if a task's requests > its claims then abort 
 
-(*) implement a safe state check 
 
-(*) call safe state check function before running any activities 
+(*) write a getMaxAdditionalRequest() function for the Task class 
+
+(*) implement isSafe() function 
+
+(*) call isSafe from Bankers algorithm before running requests 
+
 
 Implement Banker's for:
         > input-01 
@@ -40,11 +43,7 @@ Implement Banker's for:
         > input-13 
 
 
-
-
-
-
-
+---------------------------------------------------------
 
 
 (*) account for malformed input (multiple activities on one line; ignore whitespace) 
@@ -62,4 +61,16 @@ Implement Banker's for:
    
 >> The delay value represents the number of cycles between the completion of the previous activity for this
    process and the beginning of the current activity. 
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    

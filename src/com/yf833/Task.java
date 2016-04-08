@@ -43,4 +43,19 @@ public class Task {
     }
 
 
+    // takes a resourceID, returns the maximum additional request for that resource
+    public int getMaxAdditionalRequest(int resourceID){
+
+        int max_additional_request = 0;
+
+        for(Activity a : this.activities){
+            if(a.type.equals("request")){
+                max_additional_request += a.amount;
+            }
+        }
+
+        return max_additional_request;
+    }
+
+
 }
