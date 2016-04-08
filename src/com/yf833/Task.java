@@ -35,6 +35,9 @@ public class Task {
         output += "\n\n------------------------------\nTask " + this.taskID + "\n------------------------------\n";
         output += "total_time: " + this.total_time + "\n";
         output += "waiting_time: " + this.waiting_time + "\n";
+
+        output += "max additional request (for resource 1): " + getMaxAdditionalRequest(1) + "\n";
+
         output += "next activity: " + this.activities.peek();
 
 //        output += "\n------------------------------\n";

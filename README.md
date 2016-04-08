@@ -20,11 +20,12 @@ Implement FIFO for:
 (*) if a task's requests > its claims then abort 
 
 
-(*) write a getMaxAdditionalRequest() function for the Task class 
+(*) write a getMaxAdditionalRequest() function for the Task class ***
 
 (*) implement isSafe() function 
 
 (*) call isSafe from Bankers algorithm before running requests 
+        > create copies of available and tasks (using copy constructors) before simulating 
 
 
 Implement Banker's for:
