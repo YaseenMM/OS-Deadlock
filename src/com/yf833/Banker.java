@@ -53,15 +53,14 @@ public class Banker {
                 // Task task, LinkedBlockingQueue<Task> tasks, ArrayList<Integer> available, int[][] claims
 
                 Task task_copy = new Task(t);
-                LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
+                LinkedBlockingQueue<Task> tasks_copy = Util.copyTaskQueues(tasks, blocked);
                 ArrayList<Integer> available_copy = new ArrayList<>(available);
-                int[][] claims_copy = resource_claims.clone();
+                int[][] claims_copy = Util.copy2DArray(resource_claims);
 
                 boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
                 System.out.println("task" + t.taskID + " isSafe: " + is_safe);
                 System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
-                System.out.println("!t.isBlocked: " + !t.isBlocked + "\n");
 
                 /////
 
@@ -104,7 +103,7 @@ public class Banker {
 
                         Task task_copy = new Task(t);
 //                        LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
-                        LinkedBlockingQueue<Task> tasks_copy = Util.copyTaskQueue(tasks);
+                        LinkedBlockingQueue<Task> tasks_copy = Util.copyTaskQueues(tasks, blocked);
                         ArrayList<Integer> available_copy = new ArrayList<>(available);
                         int[][] claims_copy = Util.copy2DArray(resource_claims);
 

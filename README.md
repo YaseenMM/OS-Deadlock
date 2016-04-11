@@ -22,26 +22,26 @@ Implement FIFO for:
 
 (*) write a getMaxAdditionalRequest() function for the Task class ***
 
-(*) implement isSafe() function 
+(*) implement isSafe() function ***
 
-(*) call isSafe from Bankers algorithm before running requests 
-        > create copies of available and tasks (using copy constructors) before simulating 
+(*) call isSafe from Bankers algorithm before running requests ***
+        > create copies of available and tasks (using copy constructors) before simulating ***
 
 
 Implement Banker's for:
-        > input-01 
-        > input-02 
-        > input-03 
-        > input-04 
-        > input-05 
-        > input-06 
-        > input-07 
-        > input-08 
-        > input-09 
-        > input-10 
-        > input-11 
-        > input-12 
-        > input-13 
+        > input-01 (incorrect output)
+        > input-02 ***
+        > input-03 ***
+        > input-04 (infinite loop)
+        > input-05 ***
+        > input-06 ***
+        > input-07 (task 2 not aborted; check if its request exceeds claim)
+        > input-08 (incorrect output)
+        > input-09 (infinite loop)
+        > input-10 (infinite loop)
+        > input-11 (infinite loop)
+        > input-12 (incorrect output)
+        > input-13 (incorrect output)
 
 
 ---------------------------------------------------------
