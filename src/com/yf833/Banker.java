@@ -90,6 +90,9 @@ public class Banker {
                             tasks = abortUnsafeTask(tasks, t.taskID);
                         }
                         else{
+
+                            t.initial_claims[current.resourceID-1] = current.amount;
+
                             t.activities.poll();
                         }
 
@@ -241,7 +244,7 @@ public class Banker {
         Activity request = task.activities.peek();  // get the request to simulate
 
         // if a task's requests <= available resources; simulate that task
-        if(exceedsAvailableResources(task, available) == false){
+        if(exceedsAvailableResources(task, available, claims) == false){
 
             ///// simulate for the current task /////
 
@@ -264,7 +267,7 @@ public class Banker {
             for(int i=0; i<available.size(); i++){
 
 
-                while(allocationIsPossible(i, available.get(i), tasks) && !tasks.isEmpty()){
+                while(allocationIsPossible(i+1, available.get(i), tasks, claims) && !tasks.isEmpty()){
 
                     // for each task in tasks
                     for(Task t : tasks){
@@ -273,7 +276,7 @@ public class Banker {
                         // add t's claims (current allocation) for resource i back to available
                         // subtract released claims (current allocation) from claims array
 
-                        int max_additional_request = t.getMaxAdditionalRequest(i);
+                        int max_additional_request = t.getMaxAdditionalRequest(i+1, claims[t.taskID-1][i]);
 
                         System.out.println("max_additional_request: " + max_additional_request);
 
@@ -325,12 +328,12 @@ public class Banker {
 
 
     // check if ANY of the tasks have a max additional claim <= available
-    public static boolean allocationIsPossible(int resourceID, int available_amount, LinkedBlockingQueue<Task> tasks){
+    public static boolean allocationIsPossible(int resourceID, int available_amount, LinkedBlockingQueue<Task> tasks, int[][] claims){
 
         for(Task t : tasks){
-            if(t.getMaxAdditionalRequest(resourceID) <= available_amount){
+            if(t.getMaxAdditionalRequest(resourceID, claims[t.taskID-1][resourceID-1]) <= available_amount){
 
-                System.out.println("max additional request: " + t.getMaxAdditionalRequest(resourceID));
+                System.out.println("max additional request: " + t.getMaxAdditionalRequest(resourceID, claims[t.taskID-1][resourceID-1]));
                 System.out.println("available_amount: " + available_amount);
 
                 return true;
@@ -343,12 +346,12 @@ public class Banker {
 
 
     // returns false if all of a given task's additional requests are < available units (for all resource types)
-    public static boolean exceedsAvailableResources(Task t, ArrayList<Integer> available){
+    public static boolean exceedsAvailableResources(Task t, ArrayList<Integer> available, int[][] claims){
 
         // for each resource in available
         // check t's max additional request for each resource type < available for that resource
         for(int i=0; i<available.size(); i++){
-            if(t.getMaxAdditionalRequest(i) > available.get(i)){
+            if(t.getMaxAdditionalRequest(i+1, claims[t.taskID-1][i]) > available.get(i)){
                 return true;
             }
         }

@@ -71,7 +71,7 @@ public class Main {
 
         // add activities to tasks //
 
-        Task t = new Task(activities.get(0).taskID);
+        Task t = new Task(activities.get(0).taskID, num_resource_types);
         int current = t.taskID;
         int i=0;
         for(Activity a : activities){
@@ -79,7 +79,7 @@ public class Main {
             if(a.taskID != current){
                 tasks.add(t);               // add previous task
                 current = a.taskID;         // increment current task
-                t = new Task(a.taskID);     // create a new task
+                t = new Task(a.taskID, num_resource_types);     // create a new task
                 t.activities.add(a);
             }else{
                 t.activities.add(a);

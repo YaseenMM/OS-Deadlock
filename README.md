@@ -29,19 +29,19 @@ Implement FIFO for:
 
 
 Implement Banker's for:
-        > input-01 (incorrect output)
+        > input-01 ***
         > input-02 ***
         > input-03 ***
-        > input-04 (infinite loop)
+        > input-04 ***
         > input-05 ***
         > input-06 ***
         > input-07 (task 2 not aborted; check if its request exceeds claim)
-        > input-08 (incorrect output)
+        > input-08 ***
         > input-09 (infinite loop)
         > input-10 (infinite loop)
         > input-11 (infinite loop)
-        > input-12 (incorrect output)
-        > input-13 (incorrect output)
+        > input-12 ***
+        > input-13 ***
 
 
 ---------------------------------------------------------
