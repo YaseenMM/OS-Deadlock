@@ -4,6 +4,7 @@ package com.yf833;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Util {
 
@@ -51,6 +52,34 @@ public class Util {
         }
 
     }
+
+
+    public static int[][] copy2DArray(int [][] array){
+
+        int [][] copy = new int[array.length][];
+
+        for(int i=0; i<array.length; i++) {
+            copy[i] = array[i].clone();
+        }
+
+        return copy;
+    }
+
+
+    public static LinkedBlockingQueue<Task> copyTaskQueue(LinkedBlockingQueue<Task> tasks){
+
+        LinkedBlockingQueue<Task> newtasks = new LinkedBlockingQueue<>();
+
+        for(Task t : tasks){
+            newtasks.add(new Task(t));
+        }
+
+        return newtasks;
+
+    }
+
+
+
 
 
 

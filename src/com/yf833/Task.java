@@ -27,6 +27,21 @@ public class Task {
     }
 
 
+    // copy constructor
+    public Task(Task t2){
+
+        this.taskID = t2.taskID;
+
+        this.activities = new LinkedBlockingQueue<>(t2.activities);
+
+        //default values for total_time and waiting_time
+        this.total_time = t2.total_time;
+        this.waiting_time = t2.waiting_time;
+
+
+    }
+
+
     public String toString(){
         String output = "";
 

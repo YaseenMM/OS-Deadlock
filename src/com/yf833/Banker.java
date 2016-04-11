@@ -52,7 +52,7 @@ public class Banker {
                 //create copies of data strcutures for simulating within isSafe()
                 // Task task, LinkedBlockingQueue<Task> tasks, ArrayList<Integer> available, int[][] claims
 
-                Task task_copy = t;
+                Task task_copy = new Task(t);
                 LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
                 ArrayList<Integer> available_copy = new ArrayList<>(available);
                 int[][] claims_copy = resource_claims.clone();
@@ -102,10 +102,12 @@ public class Banker {
                         //create copies of data strcutures for simulating within isSafe()
                         // Task task, LinkedBlockingQueue<Task> tasks, ArrayList<Integer> available, int[][] claims
 
-                        Task task_copy = t;
-                        LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
+                        Task task_copy = new Task(t);
+//                        LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
+                        LinkedBlockingQueue<Task> tasks_copy = Util.copyTaskQueue(tasks);
                         ArrayList<Integer> available_copy = new ArrayList<>(available);
-                        int[][] claims_copy = resource_claims.clone();
+                        int[][] claims_copy = Util.copy2DArray(resource_claims);
+
 
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
@@ -246,7 +248,14 @@ public class Banker {
 
             // grant request for current
             available.set(request.resourceID-1, available.get(request.resourceID-1) - request.amount);
+            claims[task.taskID-1][request.resourceID-1] += request.amount;
 
+            //poll the current request
+            for(Task t : tasks){
+                if(t.taskID == task.taskID){
+                    t.activities.poll();
+                }
+            }
 
 
             // SIMULATE: keep granting remaining request amounts for all tasks in the set
@@ -255,17 +264,29 @@ public class Banker {
             // for each resource in available
             for(int i=0; i<available.size(); i++){
 
-                // for each task in tasks
-                for(Task t : tasks){
+
+                while(allocationIsPossible(i, available.get(i), tasks) && !tasks.isEmpty()){
+
+                    // for each task in tasks
+                    for(Task t : tasks){
+
+                        // if the available units for a resource are enough to satisfy the maxadditionalrequests:
+                        // add t's claims (current allocation) for resource i back to available
+                        // subtract released claims (current allocation) from claims array
+
+                        int max_additional_request = t.getMaxAdditionalRequest(i);
+
+                        System.out.println("max_additional_request: " + max_additional_request);
+
+                        if(available.get(i) >= max_additional_request){
+
+                            available.set(i, available.get(i) + claims[t.taskID - 1][i]);
+                            claims[t.taskID-1][i] = 0;
+
+                            tasks.remove(t);
+                        }
 
 
-
-                    // if available[i] < t.maxAdditionalRequest(i)
-                            // add t's claims (current allocation) for resource i back to available
-                            // subtract released claims (current allocation) from claims array
-                    if(available.get(i) < t.getMaxAdditionalRequest(i)){
-                        available.set(i, available.get(i) + claims[t.taskID-1][i]);
-                        claims[t.taskID-1][i] = 0;
                     }
 
 
@@ -280,6 +301,10 @@ public class Banker {
             for(int i=0; i<claims.length; i++){
                 for(int j=0; j<claims[0].length; j++){
                     if(claims[i][j] != 0){
+
+//                        System.out.println("---> CLAIMS ARRAY IS NOT EMPTY");
+//                        Util.print2DArray(claims);
+
                         return false;
                     }
                 }
@@ -291,10 +316,29 @@ public class Banker {
         }
         // if a task's request > available resources; return UNSAFE
         else{
+
+//            System.out.println("---> REQUEST > AVAILABLE");
             return false;
         }
 
 
+    }
+
+
+    // check if ANY of the tasks have a max additional claim <= available
+    public static boolean allocationIsPossible(int resourceID, int available_amount, LinkedBlockingQueue<Task> tasks){
+
+        for(Task t : tasks){
+            if(t.getMaxAdditionalRequest(resourceID) <= available_amount){
+
+                System.out.println("max additional request: " + t.getMaxAdditionalRequest(resourceID));
+                System.out.println("available_amount: " + available_amount);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
