@@ -187,7 +187,7 @@ public class Optimistic {
         }
         System.out.print("total" + "\t" + time_sum + "\t" + wait_sum + "\t");
 
-        int percent_total = (int) (((float) wait_sum / (float) time_sum) * 100);
+        int percent_total = Math.round(((float) wait_sum / (float) time_sum) * 100);
         System.out.println(percent_total + "%");
 
     }

@@ -86,7 +86,7 @@ public class Util {
         System.out.print(t.total_time + "\t");
         System.out.print(t.waiting_time + "\t");
 
-        int percentval = (int) (((float) t.waiting_time / (float) t.total_time) * 100);
+        int percentval = Math.round(((float) t.waiting_time / (float) t.total_time) * 100);
         System.out.print(percentval + "%\t");
         System.out.println();
     }

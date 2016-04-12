@@ -91,11 +91,6 @@ public class Banker {
 
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-//                        System.out.println("\n\ntask" + t.taskID + " isSafe: " + is_safe);
-//                        System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
-//                        System.out.println("!t.isBlocked: " + !t.isBlocked + "\n\n");
-
-
                         if(current.amount + resource_claims[t.taskID-1][current.resourceID-1] > t.initial_claims[current.resourceID-1]){
 
                             //abort and return resources
@@ -197,7 +192,7 @@ public class Banker {
         }
         System.out.print("total" + "\t" + time_sum + "\t" + wait_sum + "\t");
 
-        int percent_total = (int) (((float) wait_sum / (float) time_sum) * 100);
+        int percent_total = Math.round(((float) wait_sum / (float) time_sum) * 100);
         System.out.println(percent_total + "%");
 
 
