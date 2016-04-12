@@ -32,15 +32,10 @@ public class Optimistic {
                 resource_claims[t.taskID-1][j] = 0;
             }
         }
-//        Util.print2DArray(resource_claims);
-
 
 
         ///// Main Loop /////
         while(!tasks.isEmpty() || !blocked.isEmpty()){
-
-//            System.out.println("=============== CYCLE " + (cycle) + " - " + (cycle+1) + " ===============");
-
 
             //check if blocked tasks can be serviced
             for(Task t : blocked){
@@ -54,6 +49,7 @@ public class Optimistic {
                     t.activities.poll();
                     t.isBlocked = false;
                 }else{
+                    //increase waiting time if request is unable to be granted
                     t.waiting_time++;
                 }
             }
@@ -108,9 +104,6 @@ public class Optimistic {
                 }
 
 
-
-
-
             }
 
             // add all unblocked tasks back to ready queue //
@@ -127,14 +120,10 @@ public class Optimistic {
 
             ///// detect deadlock /////
             if(tasks.size() == 0 && blocked.size() != 0 && isDeadlocked == false){
-//                System.out.println("DEADLOCK DETECTED !!!!!");
                 isDeadlocked = true;
             }
             ///// break deadlock if already deadlocked /////
-//            System.out.println("IS DEADLOCKED: " + isDeadlocked);
             if(isDeadlocked){
-
-//                System.out.println("IS DEADLOCKED");
 
                 // while the next blocked task's activity can't be run; keep aborting tasks
                 while(isAvailable() == false){
@@ -147,7 +136,6 @@ public class Optimistic {
                 Task next = blocked.poll();
                 next.isBlocked = false;
                 tasks.add(next);
-
 
                 isDeadlocked = false;
 
@@ -181,12 +169,8 @@ public class Optimistic {
         }
 
 
-
-
-
-
         // print output //
-        System.out.println("\nFIFO\n");
+        System.out.println("\nFIFO");
         Util.sortTasksByID(finished_tasks);
 
         int time_sum = 0;
@@ -202,29 +186,26 @@ public class Optimistic {
             }
         }
         System.out.print("total" + "\t" + time_sum + "\t" + wait_sum + "\t");
-        System.out.println(((float) wait_sum / (float) time_sum));
 
+        int percent_total = (int) (((float) wait_sum / (float) time_sum) * 100);
+        System.out.println(percent_total + "%");
 
     }
 
 
+    // check if the next task's activity in the blocked tasks can be granted
     public static boolean isAvailable(){
-
-        // check if the next task's activity in the blocked tasks can be granted
             Task next = blocked.peek();
             if(next.activities.peek().amount <= available.get(next.activities.peek().resourceID-1)){
                 return true;
             }
-
         return false;
     }
 
 
+    // abort the lowest numbered task in the blocked queue
     public static void abortLowestTask(){
-
         int lowestTaskID = blocked.peek().taskID;
-
-        // abort the lowest numbered task in the blocked queue
         for(Task t : blocked){
             if(t.taskID < lowestTaskID){
                 lowestTaskID = t.taskID;
@@ -233,12 +214,9 @@ public class Optimistic {
 
         for(Task t : blocked){
             if(t.taskID == lowestTaskID){
-
-
                 t.isAborted = true;
                 finished_tasks.add(t);
                 blocked.remove(t);
-
 
                 //release all of t's claims and add them back to available
                 for(int j=0; j<resource_claims[t.taskID-1].length; j++){
@@ -247,11 +225,13 @@ public class Optimistic {
                     available.set(j, available.get(j) + claim);
                 }
 
-//                System.out.println("Task " + t.taskID + " aborted");
             }
         }
 
     }
 
 
+
 }
+
+
