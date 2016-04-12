@@ -113,9 +113,9 @@ public class Banker {
 
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-                        System.out.println("task" + t.taskID + " isSafe: " + is_safe);
+                        System.out.println("\n\ntask" + t.taskID + " isSafe: " + is_safe);
                         System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
-                        System.out.println("!t.isBlocked: " + !t.isBlocked + "\n");
+                        System.out.println("!t.isBlocked: " + !t.isBlocked + "\n\n");
 
                         /////
 
@@ -274,10 +274,14 @@ public class Banker {
             for(int i=0; i<available.size(); i++){
 
 
-                while(allocationIsPossible(i+1, available.get(i), tasks, claims) && !tasks.isEmpty()){
+
+                LinkedBlockingQueue<Task> task_temp = Util.copyTaskQueue(tasks);
+
+                while(allocationIsPossible(i+1, available.get(i), task_temp, claims) && !task_temp.isEmpty()){
+
 
                     // for each task in tasks
-                    for(Task t : tasks){
+                    for(Task t : task_temp){
 
                         // if the available units for a resource are enough to satisfy the maxadditionalrequests:
                         // add t's claims (current allocation) for resource i back to available
@@ -285,14 +289,14 @@ public class Banker {
 
                         int max_additional_request = t.getMaxAdditionalRequest(i+1, claims[t.taskID-1][i]);
 
-                        System.out.println("max_additional_request: " + max_additional_request);
+                        System.out.println("task" + t.taskID + " max_additional_request: " + max_additional_request);
 
                         if(available.get(i) >= max_additional_request){
 
                             available.set(i, available.get(i) + claims[t.taskID - 1][i]);
                             claims[t.taskID-1][i] = 0;
 
-                            tasks.remove(t);
+                            task_temp.remove(t);
                         }
 
 
@@ -311,8 +315,8 @@ public class Banker {
                 for(int j=0; j<claims[0].length; j++){
                     if(claims[i][j] != 0){
 
-//                        System.out.println("---> CLAIMS ARRAY IS NOT EMPTY");
-//                        Util.print2DArray(claims);
+                        System.out.println("---> TASK" + task.taskID + " CLAIMS ARRAY IS NOT EMPTY");
+                        Util.print2DArray(claims);
 
                         return false;
                     }

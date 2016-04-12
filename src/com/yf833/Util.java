@@ -84,6 +84,18 @@ public class Util {
 
 
 
+    public static LinkedBlockingQueue<Task> copyTaskQueue(LinkedBlockingQueue<Task> tasks){
+
+        LinkedBlockingQueue<Task> newtasks = new LinkedBlockingQueue<>();
+
+        for(Task t : tasks){
+            newtasks.add(new Task(t));
+        }
+
+        return newtasks;
+
+    }
+
 
 
 
