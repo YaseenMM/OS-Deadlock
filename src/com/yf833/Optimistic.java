@@ -1,25 +1,24 @@
 package com.yf833;
 
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
+
 public class Optimistic {
 
 
-    public static int cycle = 0;
-    public static boolean isDeadlocked = false;
-    public static int[][] resource_claims;
-    public static ArrayList<Task> finished_tasks = new ArrayList<>();
-
-    public static ArrayList<Integer> available;
-    public static ArrayList<Integer> freed;
-    public static LinkedBlockingQueue<Task> blocked = new LinkedBlockingQueue<>();
-
+    public static int cycle = 0;                                                    // counter for current cycle #
+    public static boolean isDeadlocked = false;                                     // tracks whether the system is in a state of deadlock or not
+    public static int[][] resource_claims;                                          // a 2D array to lookup current resource claims for all tasks
+    public static ArrayList<Task> finished_tasks = new ArrayList<>();               // contains tasks that have terminated or aborted (used when printing output)
+    public static ArrayList<Integer> available;                                     // an arraylist of availble resource amounts for all resources
+    public static ArrayList<Integer> freed;                                         // an arraylist for keeping track of how many units of each resource have been freed in this cycle
+    public static LinkedBlockingQueue<Task> blocked = new LinkedBlockingQueue<>();  // a queue for blocked tasks
 
 
+    // run the fifo simulation for the given resources and tasks //
     public static void runFifo(LinkedBlockingQueue<Task> tasks, ArrayList<Integer> resource_amounts){
 
         available = resource_amounts;

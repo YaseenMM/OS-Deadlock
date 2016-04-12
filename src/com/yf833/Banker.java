@@ -8,15 +8,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Banker {
 
-    public static int cycle = 0;
-    public static int[][] resource_claims;
-    public static ArrayList<Task> finished_tasks = new ArrayList<>();
+    public static int cycle = 0;                                                    // counter for current cycle #
+    public static int[][] resource_claims;                                          // a 2D array to lookup current resource claims for all tasks
+    public static ArrayList<Task> finished_tasks = new ArrayList<>();               // contains tasks that have terminated or aborted (used when printing output)
+    public static ArrayList<Integer> available;                                     // an arraylist of availble resource amounts for all resources
+    public static ArrayList<Integer> freed;                                         // an arraylist for keeping track of how many units of each resource have been freed in this cycle
+    public static LinkedBlockingQueue<Task> blocked = new LinkedBlockingQueue<>();  // a queue for blocked tasks
 
-    public static ArrayList<Integer> available;
-    public static ArrayList<Integer> freed;
-    public static LinkedBlockingQueue<Task> blocked = new LinkedBlockingQueue<>();
 
-
+    // run the banker simulation for the given resources and tasks //
     public static void runBanker(LinkedBlockingQueue<Task> tasks, ArrayList<Integer> resource_amounts){
 
         available = resource_amounts;

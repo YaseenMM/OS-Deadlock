@@ -6,16 +6,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
+
 public class Main {
 
-    private static final int TASK_LIMIT = 10;
-    private static final int RESOURCE_LIMIT = 10;
+    private static final int TASK_LIMIT = 10;           // arbitrary limit on number of tasks
+    private static final int RESOURCE_LIMIT = 10;       // arbitrary limit on number of resource types
 
-    private static int num_tasks;
-    private static int num_resource_types;
-    private static ArrayList<Integer> resource_amounts = new ArrayList<>();
+    private static int num_tasks;                                                   // number of tasks in the input
+    private static int num_resource_types;                                          // number of resource types in the input
+    private static ArrayList<Integer> resource_amounts = new ArrayList<>();         // resource amounts array to hold input
 
-    private static LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();
+    private static LinkedBlockingQueue<Task> tasks = new LinkedBlockingQueue<>();   // queue of tasks to hold input
 
 
     ///// MAIN /////
@@ -31,7 +33,7 @@ public class Main {
             throw new IllegalArgumentException("Incorrect number of arguments; must provide filename of input");
         }
 
-        // check if T or R exceed the arbitrary limits set; print an error message and exit if so
+        // (2) check if T or R exceed the arbitrary limits set; print an error message and exit if so
         if(num_tasks>TASK_LIMIT){
             throw new Exception("The number of tasks exceeds the maximum amount of " + TASK_LIMIT);
         }
@@ -40,24 +42,25 @@ public class Main {
         }
 
 
-        // create copies of tasks and resources //
+        // (3) create copies of tasks and resources //
         LinkedBlockingQueue<Task> tasks2 = Util.copyTaskQueue(tasks);
         ArrayList<Integer> resource_amounts2 = new ArrayList<>(resource_amounts);
 
 
 
-        // run optimistic (FIFO) simulation //
+        // (4) run optimistic (FIFO) simulation //
         Optimistic.runFifo(tasks, resource_amounts);
 
         System.out.println("\n--------------------\n");
 
-        // run banker simulation //
+        // (5) run banker simulation //
         Banker.runBanker(tasks2, resource_amounts2);
 
 
     }
 
 
+    // helper method to verify that getting input was successful
     private static void printDebuggingInfo(){
         System.out.println("\nnum_tasks: " + num_tasks);
         System.out.println("\nnum_resource_types: " + num_resource_types);
@@ -66,6 +69,7 @@ public class Main {
     }
 
 
+    // scan the input file and store all values into the appropriate variables / data structures
     private static void getInputFromFile(File inputfile) throws FileNotFoundException {
         Scanner input = new Scanner(inputfile);
 
@@ -84,16 +88,16 @@ public class Main {
         }
         activities = Util.sortActivitiesByID(activities);
 
-        // add activities to tasks //
 
+        // add activities to tasks //
         Task t = new Task(activities.get(0).taskID, num_resource_types);
         int current = t.taskID;
         int i=0;
         for(Activity a : activities){
 
             if(a.taskID != current){
-                tasks.add(t);               // add previous task
-                current = a.taskID;         // increment current task
+                tasks.add(t);                                   // add previous task
+                current = a.taskID;                             // increment current task
                 t = new Task(a.taskID, num_resource_types);     // create a new task
                 t.activities.add(a);
             }else{
@@ -107,8 +111,6 @@ public class Main {
 
             i++;
         }
-
-
 
     }
 
