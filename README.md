@@ -35,7 +35,7 @@ Implement Banker's for:
         > input-04 ***
         > input-05 ***
         > input-06 ***
-        > input-07 (task 2 not aborted; check if its request exceeds claim)
+        > input-07 ***
         > input-08 ***
         > input-09 (infinite loop)
         > input-10 (infinite loop)

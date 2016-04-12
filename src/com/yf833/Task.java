@@ -69,21 +69,56 @@ public class Task {
 
 
     // takes a resourceID, returns the maximum additional request for that resource
-    public int getMaxAdditionalRequest(int resourceID, int current_allocation){
+    public int getMaxAdditionalRequest(int resource_id, int current_allocation){
 
-//        int max_additional_request = 0;
-
-//        for(Activity a : this.activities){
-//            if(a.type.equals("request")){
-//                max_additional_request += a.amount;
-//            }
-//        }
-
-
-        int max_additional_request = this.initial_claims[resourceID-1] - current_allocation;
+        int max_additional_request = this.initial_claims[resource_id-1] - current_allocation;
 
         return max_additional_request;
     }
 
 
+
+
+    public int getSumOfFutureRequests(int resource_id){
+
+        int max_additional_request = 0;
+
+        //get the net request amount (total requests - releases) up to the last request in the list
+        int num_requests = 0;
+        for(Activity a : this.activities){
+            if(a.type.equals("request") && a.resourceID == resource_id){
+                max_additional_request += a.amount;
+                num_requests++;
+            }
+        }
+
+        // subtract releases
+        for(Activity a : this.activities){
+            if(a.type.equals("release") && a.resourceID == resource_id && num_requests>0){
+                max_additional_request -= a.amount;
+            }
+
+            if(a.type.equals("request") && a.resourceID == resource_id){
+                num_requests--;
+            }
+        }
+
+
+
+
+        return max_additional_request;
+    }
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

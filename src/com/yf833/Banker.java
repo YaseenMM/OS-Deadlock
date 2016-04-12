@@ -120,8 +120,15 @@ public class Banker {
                         /////
 
 
+
+                        if(current.amount + resource_claims[t.taskID-1][current.resourceID-1] > t.initial_claims[current.resourceID-1]){
+
+                            //abort and return resources
+                            tasks = abortUnsafeTask(tasks, t.taskID);
+
+                        }
                         // try to claim the resource amount
-                        if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked && is_safe){
+                        else if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked && is_safe){
 
                             System.out.println(">> request granted\n");
 
