@@ -91,7 +91,12 @@ public class Banker {
 
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
+                        // if request exceeds its claim, then abort
                         if(current.amount + resource_claims[t.taskID-1][current.resourceID-1] > t.initial_claims[current.resourceID-1]){
+
+                            System.out.println("During cycle " + cycle + "-" + (cycle + 1) + " of Banker's algorithm");
+                            System.out.print("\tTask " + t.taskID + "'s request exceeds its claim; aborted; ");
+                            System.out.println(resource_claims[t.taskID-1][current.resourceID-1] + " units available next cycle");
 
                             //abort and return resources
                             tasks = abortUnsafeTask(tasks, t.taskID);

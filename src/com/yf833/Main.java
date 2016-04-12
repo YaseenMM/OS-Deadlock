@@ -39,6 +39,8 @@ public class Main {
         // run optimistic (FIFO) simulation //
         Optimistic.runFifo(tasks, resource_amounts);
 
+        System.out.println("\n--------------------\n");
+
         // run banker simulation //
         Banker.runBanker(tasks2, resource_amounts2);
 
