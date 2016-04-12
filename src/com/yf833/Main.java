@@ -33,11 +33,18 @@ public class Main {
             throw new IllegalArgumentException("Incorrect number of arguments; must provide filename of input");
         }
 
-//        printDebuggingInfo();
 
-//        Optimistic.runFifo(tasks, resource_amounts);
+        // create copies of tasks and resources //
+        LinkedBlockingQueue<Task> tasks2 = Util.copyTaskQueue(tasks);
+        ArrayList<Integer> resource_amounts2 = new ArrayList<>(resource_amounts);
 
-        Banker.runBanker(tasks, resource_amounts);
+
+
+        // run optimistic (FIFO) simulation //
+        Optimistic.runFifo(tasks, resource_amounts);
+
+        // run banker simulation //
+        Banker.runBanker(tasks2, resource_amounts2);
 
 
     }

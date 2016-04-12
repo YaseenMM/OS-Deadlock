@@ -29,6 +29,17 @@ public class Activity {
         this.amount = amount;
     }
 
+    // copy constructor //
+    public Activity(Activity a2){
+        this.type = a2.type;
+        this.taskID = a2.taskID;
+        this.delay = a2.delay;
+        this.resourceID = a2.resourceID;
+        this.amount = a2.amount;
+    }
+
+
+
 
     public String toString(){
         return String.format("%-12s", this.type) + this.taskID + " " + this.delay + " " + this.resourceID + " " + this.amount;

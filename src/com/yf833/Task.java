@@ -38,13 +38,17 @@ public class Task {
 
         this.taskID = t2.taskID;
 
-        this.activities = new LinkedBlockingQueue<>(t2.activities);
-
         //default values for total_time and waiting_time
         this.total_time = t2.total_time;
         this.waiting_time = t2.waiting_time;
 
         this.initial_claims = t2.initial_claims.clone();
+
+        // copy activities queue
+        this.activities = new LinkedBlockingQueue<>();
+        for(Activity a : t2.activities){
+            this.activities.add(new Activity(a));
+        }
 
     }
 
@@ -60,7 +64,8 @@ public class Task {
 
         output += "max additional request (for resource 1): " + getMaxAdditionalRequest(1, this.initial_claims[0]) + "\n";
 
-        output += "next activity: " + this.activities.peek();
+//        output += "next activity: " + this.activities.peek();
+        output += "activities: " + this.activities.toString();
 
 //        output += "\n------------------------------\n";
 
