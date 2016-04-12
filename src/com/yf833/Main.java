@@ -8,8 +8,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
 
-    private static int num_tasks;
+    private static final int TASK_LIMIT = 10;
+    private static final int RESOURCE_LIMIT = 10;
 
+    private static int num_tasks;
     private static int num_resource_types;
     private static ArrayList<Integer> resource_amounts = new ArrayList<>();
 
@@ -17,7 +19,7 @@ public class Main {
 
 
     ///// MAIN /////
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
 
 
         // (1) get input from file; initialize variables  //
@@ -27,6 +29,14 @@ public class Main {
             getInputFromFile(inputfile);
         }else{
             throw new IllegalArgumentException("Incorrect number of arguments; must provide filename of input");
+        }
+
+        // check if T or R exceed the arbitrary limits set; print an error message and exit if so
+        if(num_tasks>TASK_LIMIT){
+            throw new Exception("The number of tasks exceeds the maximum amount of " + TASK_LIMIT);
+        }
+        if(num_resource_types>RESOURCE_LIMIT){
+            throw new Exception("The number of resource types exceeds the maximum amount of " + RESOURCE_LIMIT);
         }
 
 

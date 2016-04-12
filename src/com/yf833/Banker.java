@@ -70,7 +70,10 @@ public class Banker {
 
                     if(current.type.equals("initiate")){
 
-                        if(current.amount > available.get(current.resourceID-1))    {
+                        // if initial claims for a resource exceeds the number of units present, then abort
+                        if(current.amount > available.get(current.resourceID-1)) {
+                            System.out.println("Banker aborts task " + t.taskID + " before run begins:");
+                            System.out.println("\tclaim for resource " + current.resourceID + " (" + current.amount + ") exceeds number of units present (" + available.get(current.resourceID-1) + ")");
                             tasks = abortUnsafeTask(tasks, t.taskID);
                         }
                         else{
