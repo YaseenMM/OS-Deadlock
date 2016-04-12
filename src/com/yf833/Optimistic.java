@@ -24,7 +24,7 @@ public class Optimistic {
         available = resource_amounts;
         freed = new ArrayList<>(Collections.nCopies(available.size(), 0));
 
-        //initialize resource_claims[][]
+        //initialize resource_claims[][] with 0s
         resource_claims = new int[tasks.size()][resource_amounts.size()];
         for(Task t : tasks){
             for(int j=0; j<resource_amounts.size(); j++){
@@ -65,7 +65,7 @@ public class Optimistic {
                         t.activities.poll();
                     }
                     else if(current.type.equals("request")){
-                        // try to claim the resource amount
+                        // try to claim the resource amount, otherwise, add to blocked and increase waiting time
                         if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked){
                             resource_claims[t.taskID-1][current.resourceID-1] += current.amount;
                             available.set(current.resourceID - 1, available.get(current.resourceID - 1) - current.amount);
@@ -81,6 +81,7 @@ public class Optimistic {
 
                     }
                     else if(current.type.equals("release")){
+                        // release the task's claims into freed
                         resource_claims[t.taskID-1][current.resourceID-1] -= current.amount;
                         freed.set(current.resourceID-1, freed.get(current.resourceID-1) + current.amount);
                         t.activities.poll();
@@ -88,6 +89,7 @@ public class Optimistic {
                     }
 
                     else if (current.type.equals("terminate")){
+                        // terminate the task -- set the finish time, add it to finished, and remove it from the queue
                         t.total_time = cycle;
                         finished_tasks.add(t);
                         tasks.remove(t);
@@ -97,7 +99,7 @@ public class Optimistic {
 
                 }
                 else{
-
+                    // if delay was not at 0 this cycle, decrement the delay counter
                     current.delay--;
 
                 }
@@ -118,6 +120,7 @@ public class Optimistic {
 
 
             ///// detect deadlock /////
+            // deadlock occurs when there items in blocked and nothing in the ready queue
             if(tasks.size() == 0 && blocked.size() != 0 && isDeadlocked == false){
                 isDeadlocked = true;
             }
@@ -190,6 +193,8 @@ public class Optimistic {
         System.out.println(percent_total + "%");
 
     }
+
+
 
 
     // check if the next task's activity in the blocked tasks can be granted

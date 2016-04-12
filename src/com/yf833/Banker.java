@@ -47,15 +47,17 @@ public class Banker {
                 ArrayList<Integer> available_copy = new ArrayList<>(available);
                 int[][] claims_copy = Util.copy2DArray(resource_claims);
 
+                // check for safety
                 boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-                // try to claim the resource amount
+                // try to claim the resource amount (first check if requested amount is less than available and the state is safe)
                 if(current.amount <= available.get(current.resourceID-1) && is_safe){
                     resource_claims[t.taskID-1][current.resourceID-1] += current.amount;
                     available.set(current.resourceID - 1, available.get(current.resourceID - 1) - current.amount);
                     t.activities.poll();
                     t.isBlocked = false;
                 }else{
+                    //increase waiting time for task if its request was not granted
                     t.waiting_time++;
                 }
             }
@@ -70,13 +72,14 @@ public class Banker {
 
                     if(current.type.equals("initiate")){
 
-                        // if initial claims for a resource exceeds the number of units present, then abort
+                        // if initial claims for a resource exceeds the number of units present, then abort and release its resources
                         if(current.amount > available.get(current.resourceID-1)) {
                             System.out.println("Banker aborts task " + t.taskID + " before run begins:");
                             System.out.println("\tclaim for resource " + current.resourceID + " (" + current.amount + ") exceeds number of units present (" + available.get(current.resourceID-1) + ")");
                             tasks = abortUnsafeTask(tasks, t.taskID);
                         }
                         else{
+                            // initiate for the current task -- update the initial_claims array with the claimed amount
                             t.initial_claims[current.resourceID-1] = current.amount;
                             t.activities.poll();
                         }
@@ -92,9 +95,10 @@ public class Banker {
                         ArrayList<Integer> available_copy = new ArrayList<>(available);
                         int[][] claims_copy = Util.copy2DArray(resource_claims);
 
+                        // check for safety
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-                        // if request exceeds its claim, then abort
+                        // if request exceeds its claim, then abort and release its resources
                         if(current.amount + resource_claims[t.taskID-1][current.resourceID-1] > t.initial_claims[current.resourceID-1]){
 
                             System.out.println("During cycle " + cycle + "-" + (cycle + 1) + " of Banker's algorithm");
@@ -108,15 +112,13 @@ public class Banker {
                         // try to claim the resource amount
                         else if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked && is_safe){
 
-                            // grant the request
-
+                            // grant the request and subtract its claimed amount from available
                             resource_claims[t.taskID-1][current.resourceID-1] += current.amount;
                             available.set(current.resourceID - 1, available.get(current.resourceID - 1) - current.amount);
                             t.activities.poll();
 
                         }else{
                             // don't grant the request and block the task
-
                             t.waiting_time++;
                             t.isBlocked = true;
 
@@ -126,6 +128,8 @@ public class Banker {
 
                     }
                     else if(current.type.equals("release")){
+
+                        // release the current task's resources into freed
                         resource_claims[t.taskID-1][current.resourceID-1] -= current.amount;
                         freed.set(current.resourceID-1, freed.get(current.resourceID-1) + current.amount);
                         t.activities.poll();
@@ -133,6 +137,8 @@ public class Banker {
                     }
 
                     else if (current.type.equals("terminate")){
+
+                        //terminate the task -- set the finish time and remove it from the queue
                         t.total_time = cycle;
                         finished_tasks.add(t);
                         tasks.remove(t);
@@ -142,6 +148,7 @@ public class Banker {
 
                 }
                 else{
+                    // if delay was not at 0 this cycle, decrement the delay counter
                     current.delay--;
                 }
 
@@ -312,6 +319,7 @@ public class Banker {
         for(Task t : ready_tasks){
             if(t.taskID == task_id){
 
+                //remove the task from the queue
                 t.isAborted = true;
                 finished_tasks.add(t);
                 ready_tasks.remove(t);
