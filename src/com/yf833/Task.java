@@ -1,25 +1,24 @@
 package com.yf833;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
+// represents a task (process)
 public class Task {
 
-    public int taskID;
-    public int total_time;
-    public int waiting_time;
+    public int taskID;                  // the task's ID
+    public int total_time;              // the total time (# of cycles) that the task has been in the system for
+    public int waiting_time;            // the amount of time (# of cycles) that the task has been in the blocked queue
 
-    public int[] initial_claims;
+    public int[] initial_claims;        // an array to hold the initial resource claims (for all resource types)
 
-    public boolean isBlocked = false;
-    public boolean isAborted = false;
+    public boolean isBlocked = false;   // tracks if this task is blocked or not
+    public boolean isAborted = false;   // set to true if the task is aborted (used when printing output)
+
+    public LinkedBlockingQueue<Activity> activities;    // a queue of activites for this task
 
 
-    public LinkedBlockingQueue<Activity> activities;
-
-
+    // constructor //
     public Task(int taskID, int num_resources){
         this.taskID = taskID;
 
@@ -54,20 +53,16 @@ public class Task {
 
 
     public String toString(){
-        String output = "";
 
-//        output += "------------------------------\n";
+        String output = "";
 
         output += "\n\n------------------------------\nTask " + this.taskID + "\n------------------------------\n";
         output += "total_time: " + this.total_time + "\n";
         output += "waiting_time: " + this.waiting_time + "\n";
-
         output += "max additional request (for resource 1): " + getMaxAdditionalRequest(1, this.initial_claims[0]) + "\n";
 
 //        output += "next activity: " + this.activities.peek();
         output += "activities: " + this.activities.toString();
-
-//        output += "\n------------------------------\n";
 
         return output;
     }
@@ -80,40 +75,6 @@ public class Task {
 
         return max_additional_request;
     }
-
-
-
-
-    public int getSumOfFutureRequests(int resource_id){
-
-        int max_additional_request = 0;
-
-        //get the net request amount (total requests - releases) up to the last request in the list
-        int num_requests = 0;
-        for(Activity a : this.activities){
-            if(a.type.equals("request") && a.resourceID == resource_id){
-                max_additional_request += a.amount;
-                num_requests++;
-            }
-        }
-
-        // subtract releases
-        for(Activity a : this.activities){
-            if(a.type.equals("release") && a.resourceID == resource_id && num_requests>0){
-                max_additional_request -= a.amount;
-            }
-
-            if(a.type.equals("request") && a.resourceID == resource_id){
-                num_requests--;
-            }
-        }
-
-
-
-
-        return max_additional_request;
-    }
-
 
 
 }
