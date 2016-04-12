@@ -39,7 +39,7 @@ public class Banker {
         ///// Main Loop /////
         while(!tasks.isEmpty() || !blocked.isEmpty()){
 
-            System.out.println("=============== CYCLE " + (cycle) + " - " + (cycle+1) + " ===============");
+//            System.out.println("=============== CYCLE " + (cycle) + " - " + (cycle+1) + " ===============");
 
 
 
@@ -59,8 +59,8 @@ public class Banker {
 
                 boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-                System.out.println("task" + t.taskID + " isSafe: " + is_safe);
-                System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
+//                System.out.println("task" + t.taskID + " isSafe: " + is_safe);
+//                System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
 
                 /////
 
@@ -105,7 +105,6 @@ public class Banker {
                         // Task task, LinkedBlockingQueue<Task> tasks, ArrayList<Integer> available, int[][] claims
 
                         Task task_copy = new Task(t);
-//                        LinkedBlockingQueue<Task> tasks_copy = new LinkedBlockingQueue<>(tasks);
                         LinkedBlockingQueue<Task> tasks_copy = Util.copyTaskQueues(tasks, blocked);
                         ArrayList<Integer> available_copy = new ArrayList<>(available);
                         int[][] claims_copy = Util.copy2DArray(resource_claims);
@@ -113,9 +112,9 @@ public class Banker {
 
                         boolean is_safe = isSafe(task_copy, tasks_copy, available_copy, claims_copy);
 
-                        System.out.println("\n\ntask" + t.taskID + " isSafe: " + is_safe);
-                        System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
-                        System.out.println("!t.isBlocked: " + !t.isBlocked + "\n\n");
+//                        System.out.println("\n\ntask" + t.taskID + " isSafe: " + is_safe);
+//                        System.out.println("current.amount <= available.get(current.resourceID-1): " + (current.amount <= available.get(current.resourceID-1)));
+//                        System.out.println("!t.isBlocked: " + !t.isBlocked + "\n\n");
 
                         /////
 
@@ -130,7 +129,7 @@ public class Banker {
                         // try to claim the resource amount
                         else if(current.amount <= available.get(current.resourceID-1) && !t.isBlocked && is_safe){
 
-                            System.out.println(">> request granted\n");
+//                            System.out.println(">> request granted\n");
 
                             resource_claims[t.taskID-1][current.resourceID-1] += current.amount;
                             available.set(current.resourceID - 1, available.get(current.resourceID - 1) - current.amount);
@@ -138,7 +137,7 @@ public class Banker {
 
                         }else{
 
-                            System.out.println(">> request not granted; task blocked\n");
+//                            System.out.println(">> request not granted; task blocked\n");
 
                             t.waiting_time++;
                             t.isBlocked = true;
@@ -195,17 +194,17 @@ public class Banker {
 
             ///// DEBUGGING INFO /////
 
-            System.out.println("\nready:");
-            System.out.println(tasks.toString());
-
-            System.out.println("\nblocked:");
-            System.out.println(blocked.toString());
-
-            System.out.println("\nclaims:");
-            Util.print2DArray(resource_claims);
-
-            System.out.println("\navailable:");
-            System.out.println(available.toString() + "\n");
+//            System.out.println("\nready:");
+//            System.out.println(tasks.toString());
+//
+//            System.out.println("\nblocked:");
+//            System.out.println(blocked.toString());
+//
+//            System.out.println("\nclaims:");
+//            Util.print2DArray(resource_claims);
+//
+//            System.out.println("\navailable:");
+//            System.out.println(available.toString() + "\n");
 
         }
 
@@ -289,7 +288,7 @@ public class Banker {
 
                         int max_additional_request = t.getMaxAdditionalRequest(i+1, claims[t.taskID-1][i]);
 
-                        System.out.println("task" + t.taskID + " max_additional_request: " + max_additional_request);
+//                        System.out.println("task" + t.taskID + " max_additional_request: " + max_additional_request);
 
                         if(available.get(i) >= max_additional_request){
 
@@ -315,7 +314,7 @@ public class Banker {
                 for(int j=0; j<claims[0].length; j++){
                     if(claims[i][j] != 0){
 
-                        System.out.println("---> TASK" + task.taskID + " CLAIMS ARRAY IS NOT EMPTY");
+//                        System.out.println("---> TASK" + task.taskID + " CLAIMS ARRAY IS NOT EMPTY");
                         Util.print2DArray(claims);
 
                         return false;
@@ -344,8 +343,8 @@ public class Banker {
         for(Task t : tasks){
             if(t.getMaxAdditionalRequest(resourceID, claims[t.taskID-1][resourceID-1]) <= available_amount){
 
-                System.out.println("max additional request: " + t.getMaxAdditionalRequest(resourceID, claims[t.taskID-1][resourceID-1]));
-                System.out.println("available_amount: " + available_amount);
+//                System.out.println("max additional request: " + t.getMaxAdditionalRequest(resourceID, claims[t.taskID-1][resourceID-1]));
+//                System.out.println("available_amount: " + available_amount);
 
                 return true;
             }
@@ -395,7 +394,7 @@ public class Banker {
                     available.set(j, available.get(j) + claim);
                 }
 
-                System.out.println("Task " + t.taskID + " aborted");
+//                System.out.println("Task " + t.taskID + " aborted");
             }
         }
 
